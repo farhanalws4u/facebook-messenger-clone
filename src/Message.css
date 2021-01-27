@@ -11,7 +11,15 @@
 }
 
 .message_userCard {
-  background-color: #0b81ff !important;
+  /* background-color: #0b81ff !important; */
+  background-image: linear-gradient(
+    to left,
+    #f183c0,
+    #de83d1,
+    #c486e0,
+    #a18aec,
+    #748ff3
+  );
 }
 
 .message_guestCard {
