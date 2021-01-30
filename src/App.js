@@ -1,18 +1,29 @@
 import "./App.css";
 import react, { useEffect, useState } from "react";
 import Message from "./Message";
-import { Button, FormControl, InputLabel, Input } from "@material-ui/core";
+import { FormControl, Input } from "@material-ui/core";
 import db from "./firebase";
 import firebase from "firebase";
 import FlipMove from "react-flip-move";
 import SendIcon from "@material-ui/icons/Send";
 import { IconButton } from "@material-ui/core";
+import Picker from "emoji-picker-react";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 
 function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState("");
+  const [boolean, setBoolen] = useState(false);
+  const [color, setColor] = useState("");
+  const [rotateValue, setRotateValue] = useState(0);
+  const [pickerDis, setPickerDis] = useState("none");
 
+  const onEmojiClick = (event, emojiObject) => {
+    event.preventDefault();
+    setInput(input + emojiObject.emoji);
+  };
   useEffect(() => {
     setUsername(prompt("please enter your name"));
   }, []); // if [] is blank when the app component loads. but if we type [input] then every sigle type the input changes the code runs inside the useEffect.
@@ -39,6 +50,22 @@ function App() {
     setInput("");
   };
 
+  const emojiPopup = () => {
+    boolean === false ? setBoolen(true) : setBoolen(false);
+  };
+
+  useEffect(() => {
+    if (boolean) {
+      setColor("secondary");
+      setRotateValue(180);
+      setPickerDis("");
+    } else {
+      setColor("");
+      setRotateValue(0);
+      setPickerDis("none");
+    }
+  }, [boolean]);
+
   return (
     <div className="App">
       <img
@@ -49,7 +76,28 @@ function App() {
       <h2>Welcome {username}</h2>
 
       <form className="app_form">
+        <Picker
+          className="emoji-picker-react"
+          // pickerStyle={boolean ? { display: "" } : { display: "none" }}
+          pickerStyle={{
+            display: `${pickerDis}`,
+          }}
+          onEmojiClick={onEmojiClick}
+        />
+
         <FormControl className="app_formControl">
+          <IconButton className="app_addCircleIcon">
+            <AddCircleIcon color="primary" />
+          </IconButton>
+          <IconButton className="app_EmojiEmotionIcon" onClick={emojiPopup}>
+            <EmojiEmotionsIcon
+              color={color}
+              style={{
+                transform: `rotate(${rotateValue}deg)`,
+                transition: "ease .15s",
+              }}
+            />
+          </IconButton>
           <Input
             className="app_input"
             placeholder="Enter a message..."
@@ -75,7 +123,9 @@ function App() {
           <Message key={id} username={username} message={message} />
         ))}
       </FlipMove>
-    </div> //  when we put somthing inside the form and crate a submit button, then on pressing the enter the submit button works. and we will prevent the page to refresh.
+    </div>
+
+    //  when we put somthing inside the form and crate a submit button, then on pressing the enter the submit button works. and we will prevent the page to refresh.
   );
 }
 

@@ -31,3 +31,15 @@
   flex: 0;
   margin-right: 20px !important;
 }
+
+.emoji-picker-react {
+  width: 100% !important;
+}
+
+.app_addCircleIcon {
+  margin-bottom: -5px !important;
+}
+
+.app_EmojiEmotionIcon {
+  margin-bottom: -5px !important;
+}
